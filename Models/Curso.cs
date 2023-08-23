@@ -7,10 +7,12 @@ namespace atendimentoAlunos.Models
     public class Curso
     {
         [Key]
+        [Display(Name = "ID")]
         public int id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo Obrigatório!")]
         [StringLength(35)]
+        [Display(Name = "Descrição")]
         public string descricao { get; set; }
     }
 }
