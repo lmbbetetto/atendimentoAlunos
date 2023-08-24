@@ -7,10 +7,24 @@ namespace atendimentoAlunos.Models
     public class Sala
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Display(Name = "Código")]
+        [Required(ErrorMessage = "Campo Obrigatório!")]
         public int id { get; set; }
+
+        [Required(ErrorMessage = "Campo Obrigatório!")]
+        [Display(Name = "Descrição")]
         public string descricao { get; set; }
+
+        [Required(ErrorMessage = "Campo Obrigatório!")]
+        [Display(Name = "Monitor")]
+        public string monitor { get; set; }
+
+        [Required(ErrorMessage = "Campo Obrigatório!")]
+        [Display(Name = "Equipamentos")]
         public int equipamentos { get; set; }
+
+        [Required(ErrorMessage = "Campo Obrigatório!")]
+        [Display(Name = "Siatuação")]
         public char situacao { get; set; }
     }
 }
