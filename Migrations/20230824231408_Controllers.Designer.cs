@@ -12,8 +12,8 @@ using atendimentoAlunos.Models;
 namespace atendimentoAlunos.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20230817233531_Atendimento")]
-    partial class Atendimento
+    [Migration("20230824231408_Controllers")]
+    partial class Controllers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,18 +36,20 @@ namespace atendimentoAlunos.Migrations
                     b.Property<DateTime>("aniversario")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("cursoid")
+                    b.Property<int>("cursoID")
                         .HasColumnType("int");
 
                     b.Property<string>("nome")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("periodo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
-                    b.HasIndex("cursoid");
+                    b.HasIndex("cursoID");
 
                     b.ToTable("Aluno");
                 });
@@ -60,20 +62,20 @@ namespace atendimentoAlunos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<int?>("alunoid")
+                    b.Property<int>("alunoID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("dataHora")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("salaid")
+                    b.Property<int>("salaID")
                         .HasColumnType("int");
 
                     b.HasKey("id");
 
-                    b.HasIndex("alunoid");
+                    b.HasIndex("alunoID");
 
-                    b.HasIndex("salaid");
+                    b.HasIndex("salaID");
 
                     b.ToTable("Atendimento");
                 });
@@ -105,10 +107,15 @@ namespace atendimentoAlunos.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("descricao")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("equipamentos")
                         .HasColumnType("int");
+
+                    b.Property<string>("monitor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("situacao")
                         .IsRequired()
@@ -123,7 +130,9 @@ namespace atendimentoAlunos.Migrations
                 {
                     b.HasOne("atendimentoAlunos.Models.Curso", "curso")
                         .WithMany()
-                        .HasForeignKey("cursoid");
+                        .HasForeignKey("cursoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("curso");
                 });
@@ -132,11 +141,15 @@ namespace atendimentoAlunos.Migrations
                 {
                     b.HasOne("atendimentoAlunos.Models.Aluno", "aluno")
                         .WithMany()
-                        .HasForeignKey("alunoid");
+                        .HasForeignKey("alunoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("atendimentoAlunos.Models.Sala", "sala")
                         .WithMany()
-                        .HasForeignKey("salaid");
+                        .HasForeignKey("salaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("aluno");
 

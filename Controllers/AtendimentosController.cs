@@ -21,7 +21,8 @@ namespace atendimentoAlunos.Controllers
         // GET: Atendimentos
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Atendimento.ToListAsync());
+            var contexto = _context.Atendimento.Include(a => a.aluno).Include(a => a.sala);
+            return View(await contexto.ToListAsync());
         }
 
         // GET: Atendimentos/Details/5
@@ -33,6 +34,8 @@ namespace atendimentoAlunos.Controllers
             }
 
             var atendimento = await _context.Atendimento
+                .Include(a => a.aluno)
+                .Include(a => a.sala)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (atendimento == null)
             {
@@ -45,6 +48,8 @@ namespace atendimentoAlunos.Controllers
         // GET: Atendimentos/Create
         public IActionResult Create()
         {
+            ViewData["alunoID"] = new SelectList(_context.Aluno, "id", "nome");
+            ViewData["salaID"] = new SelectList(_context.Sala, "id", "descricao");
             return View();
         }
 
@@ -53,7 +58,7 @@ namespace atendimentoAlunos.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,dataHora")] Atendimento atendimento)
+        public async Task<IActionResult> Create([Bind("id,alunoID,salaID,dataHora")] Atendimento atendimento)
         {
             if (ModelState.IsValid)
             {
@@ -61,6 +66,8 @@ namespace atendimentoAlunos.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["alunoID"] = new SelectList(_context.Aluno, "id", "nome", atendimento.alunoID);
+            ViewData["salaID"] = new SelectList(_context.Sala, "id", "descricao", atendimento.salaID);
             return View(atendimento);
         }
 
@@ -77,6 +84,8 @@ namespace atendimentoAlunos.Controllers
             {
                 return NotFound();
             }
+            ViewData["alunoID"] = new SelectList(_context.Aluno, "id", "nome", atendimento.alunoID);
+            ViewData["salaID"] = new SelectList(_context.Sala, "id", "descricao", atendimento.salaID);
             return View(atendimento);
         }
 
@@ -85,7 +94,7 @@ namespace atendimentoAlunos.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,dataHora")] Atendimento atendimento)
+        public async Task<IActionResult> Edit(int id, [Bind("id,alunoID,salaID,dataHora")] Atendimento atendimento)
         {
             if (id != atendimento.id)
             {
@@ -112,6 +121,8 @@ namespace atendimentoAlunos.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["alunoID"] = new SelectList(_context.Aluno, "id", "nome", atendimento.alunoID);
+            ViewData["salaID"] = new SelectList(_context.Sala, "id", "descricao", atendimento.salaID);
             return View(atendimento);
         }
 
@@ -124,6 +135,8 @@ namespace atendimentoAlunos.Controllers
             }
 
             var atendimento = await _context.Atendimento
+                .Include(a => a.aluno)
+                .Include(a => a.sala)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (atendimento == null)
             {

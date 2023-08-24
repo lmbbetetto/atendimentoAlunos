@@ -9,22 +9,22 @@ using atendimentoAlunos.Models;
 
 namespace atendimentoAlunos.Controllers
 {
-    public class SalaController : Controller
+    public class SalasController : Controller
     {
         private readonly Contexto _context;
 
-        public SalaController(Contexto context)
+        public SalasController(Contexto context)
         {
             _context = context;
         }
 
-        // GET: Sala
+        // GET: Salas
         public async Task<IActionResult> Index()
         {
               return View(await _context.Sala.ToListAsync());
         }
 
-        // GET: Sala/Details/5
+        // GET: Salas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Sala == null)
@@ -42,18 +42,18 @@ namespace atendimentoAlunos.Controllers
             return View(sala);
         }
 
-        // GET: Sala/Create
+        // GET: Salas/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Sala/Create
+        // POST: Salas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,descricao,equipamentos,situacao")] Sala sala)
+        public async Task<IActionResult> Create([Bind("id,descricao,monitor,equipamentos,situacao")] Sala sala)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +64,7 @@ namespace atendimentoAlunos.Controllers
             return View(sala);
         }
 
-        // GET: Sala/Edit/5
+        // GET: Salas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Sala == null)
@@ -80,12 +80,12 @@ namespace atendimentoAlunos.Controllers
             return View(sala);
         }
 
-        // POST: Sala/Edit/5
+        // POST: Salas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,descricao,equipamentos,situacao")] Sala sala)
+        public async Task<IActionResult> Edit(int id, [Bind("id,descricao,monitor,equipamentos,situacao")] Sala sala)
         {
             if (id != sala.id)
             {
@@ -115,7 +115,7 @@ namespace atendimentoAlunos.Controllers
             return View(sala);
         }
 
-        // GET: Sala/Delete/5
+        // GET: Salas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Sala == null)
@@ -133,7 +133,7 @@ namespace atendimentoAlunos.Controllers
             return View(sala);
         }
 
-        // POST: Sala/Delete/5
+        // POST: Salas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

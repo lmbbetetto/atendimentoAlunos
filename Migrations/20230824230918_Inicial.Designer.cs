@@ -12,8 +12,8 @@ using atendimentoAlunos.Models;
 namespace atendimentoAlunos.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20230817233128_Alunos")]
-    partial class Alunos
+    [Migration("20230824230918_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,20 +36,48 @@ namespace atendimentoAlunos.Migrations
                     b.Property<DateTime>("aniversario")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("cursoid")
+                    b.Property<int>("cursoID")
                         .HasColumnType("int");
 
                     b.Property<string>("nome")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("periodo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
-                    b.HasIndex("cursoid");
+                    b.HasIndex("cursoID");
 
                     b.ToTable("Aluno");
+                });
+
+            modelBuilder.Entity("atendimentoAlunos.Models.Atendimento", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int>("alunoID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("dataHora")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("salaID")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("alunoID");
+
+                    b.HasIndex("salaID");
+
+                    b.ToTable("Atendimento");
                 });
 
             modelBuilder.Entity("atendimentoAlunos.Models.Curso", b =>
@@ -79,10 +107,15 @@ namespace atendimentoAlunos.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("descricao")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("equipamentos")
                         .HasColumnType("int");
+
+                    b.Property<string>("monitor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("situacao")
                         .IsRequired()
@@ -97,9 +130,30 @@ namespace atendimentoAlunos.Migrations
                 {
                     b.HasOne("atendimentoAlunos.Models.Curso", "curso")
                         .WithMany()
-                        .HasForeignKey("cursoid");
+                        .HasForeignKey("cursoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("curso");
+                });
+
+            modelBuilder.Entity("atendimentoAlunos.Models.Atendimento", b =>
+                {
+                    b.HasOne("atendimentoAlunos.Models.Aluno", "aluno")
+                        .WithMany()
+                        .HasForeignKey("alunoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("atendimentoAlunos.Models.Sala", "sala")
+                        .WithMany()
+                        .HasForeignKey("salaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("aluno");
+
+                    b.Navigation("sala");
                 });
 #pragma warning restore 612, 618
         }
