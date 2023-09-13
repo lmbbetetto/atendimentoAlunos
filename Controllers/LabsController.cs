@@ -19,5 +19,10 @@ namespace atendimentoAlunos.Controllers
             
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
+
     }
 }

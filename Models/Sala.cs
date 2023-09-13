@@ -16,7 +16,7 @@ namespace atendimentoAlunos.Models
         public string descricao { get; set; }
 
         [Required(ErrorMessage = "Campo Obrigatório!")]
-        [Display(Name = "Monitor")]
+        [Display(Name = "Instrutor")]
         public string monitor { get; set; }
 
         [Required(ErrorMessage = "Campo Obrigatório!")]
